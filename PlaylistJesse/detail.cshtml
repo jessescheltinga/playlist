@@ -1,0 +1,35 @@
+﻿@using System.Data;
+@using PlaylistJesse.App_Code;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.css" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+</head>
+<body>
+    <div>
+        <a class="page-link" href="~/index.cshtml">Back to homepage</a>
+        @{
+            SongMethods mySongMethods = new SongMethods();
+            string id = Request.QueryString["id"];
+
+            DataRow dr = mySongMethods.GetSong(id);
+
+            <div class="table table-active table-light table-bordered">
+                <p>    @dr["id"]       </p>
+                <p>    @dr["title"]    </p>
+                <p>    @dr["artist"]   </p>
+                <p>    @dr["year"]     </p>
+                <p>    @dr["genre"]    </p>
+                <p>    @dr["album"]    </p>
+            </div>
+        }
+    </div>
+</body>
+</html>

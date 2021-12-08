@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+@using System.Data;
+@using PlaylistJesse.App_Code;
+
+@{ 
+    SongMethods mySongMethods = Session["playlistClass"] as SongMethods;
+    string file = Session["file"] as string;
+}
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <a class="page-link" href="~/index.cshtml">Back to homepage</a>
+        <style>
+            .form-inline, .form-text{
+                margin-left: 5px;
+            }
+            .rounded {
+                margin-top: 5px;
+                margin-left: 5px;
+            }
+        </style>
+        <div>
+            <form class="table-info" method="post" action="#">
+                <label class="form-inline">Id</label><input class="form-text" type="text" name="id" />
+                <label class="form-inline">Title</label><input class="form-text" type="text" name="title" />
+                <label class="form-inline">Artist</label><input class="form-text" type="text" name="artist" />
+                <label class="form-inline">Year</label><input class="form-text" type="text" name="year" />
+                <label class="form-inline">Genre</label><input class="form-text" type="text" name="genre" />
+                <label class="form-inline">Album</label><input class="form-text" type="text" name="album" />
+                <input class="rounded" type="submit" value="Opslaan" />
+            </form>
+        </div>
+    </div>
+
+    @{ 
+        if (IsPost)
+        {
+            DataRow dr = mySongMethods.GetEmptyDataRow();
+
+            dr[0] = Request.Form["id"];
+            dr[1] = Request.Form["title"];
+            dr[2] = Request.Form["artist"];
+            dr[3] = Request.Form["year"];
+            dr[4] = Request.Form["genre"];
+            dr[5] = Request.Form["album"];
+
+            mySongMethods.CreateSong(dr);
+            Response.Redirect(@"~/index.cshtml");
+
+        }
+    }
+</body>
+</html>

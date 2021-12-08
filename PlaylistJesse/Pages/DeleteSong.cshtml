@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+@using System.Data;
+@using PlaylistJesse.App_Code;
+
+@{
+    SongMethods mySongMethods = Session["playlistClass"] as SongMethods;
+    string file = Session["file"] as string;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Playlist</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.css" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+</head>
+<body>
+
+    <style>
+        #keuzemaken {
+            text-align: center;
+        }
+
+        #verzenden {
+            background-color: aquamarine;
+            font-size: 20px;
+            height: 50px;
+            width: 20%;
+        }
+        
+    </style>
+
+    <div class="table table-active table-light table-bordered form-check-label">
+        <form name="keuze" method="post" id="keuzemaken">
+            Ja      <input type="radio" name="keuze" value="ja" id="ja" />
+            Nee     <input type="radio" name="keuze" value="nee" id="nee" /><br />
+            <input type="submit" id="verzenden" />
+        </form>
+
+        @if (IsPost)
+        {
+            if (Request.Form["keuze"] == "ja")
+            {
+                string id = Request.QueryString["id"];
+                mySongMethods.DeleteSong(id);
+            }
+
+            Response.Redirect(@"~/index.cshtml");
+        }
+    </div>
+</body>
+</html>

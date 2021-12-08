@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+
+@using System.Data;
+@using PlaylistJesse.App_Code;
+
+@{
+    DataSet ds = null;
+
+    SongMethods mySongMethods = Session["playlistClass"] as SongMethods;
+    if (mySongMethods == null)
+    {
+        mySongMethods = new SongMethods();
+        Session["playlistClass"] = mySongMethods;
+    }
+    if ( ds == null )
+    {
+        ds = mySongMethods.GetSongs();
+    }
+}
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Playlist</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.css" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+</head>
+<body>
+    <div>
+        <style>
+            #titel:hover{
+                background-color:lightcyan;
+                color:red;
+                text-decoration:underline;
+            }
+        </style>
+
+        <h2 id="titel" style="text-align:center">My first playlist</h2>
+        <hr />
+
+        <table class="table table-active table-light table-bordered">
+            <tr>
+                <th>Id</th> 
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Album</th>
+                <th>Links</th>
+            </tr>
+
+            @foreach (DataRow dr in ds.Tables["song"].Rows)
+             {
+                <tr>
+                    <td>    @dr["id"]       </td>
+                    <td>    @dr["title"]    </td>
+                    <td>    @dr["artist"]   </td>
+                    <td>    @dr["year"]     </td>
+                    <td>    @dr["genre"]    </td>
+                    <td>    @dr["album"]    </td>
+                    <td>
+                        <a href="~/Pages/UpdateSong.cshtml?id=@dr["id"]"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a href="detail.cshtml?id=@dr["id"]"><i class="fa fa-info" aria-hidden="true"></i></a>
+                        <a href="~/Pages/DeleteSong.cshtml?id=@dr["id"]"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                    </tr>
+             }
+        </table>
+    </div>
+    <br /><br />
+    <a href="~/Pages/CreateSong.cshtml">Add a new song</a>
+</body>
+</html>

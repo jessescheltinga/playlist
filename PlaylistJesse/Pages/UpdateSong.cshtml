@@ -1,0 +1,72 @@
+﻿@using PlaylistJesse.App_Code;
+@using System.Data;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Playlist</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.css" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+</head>
+<body>
+    <a class="page-link" href="~/index.cshtml">Back to homepage</a>
+    <div>
+
+        @{
+            SongMethods mySongMethods = Session["playlistClass"] as SongMethods;
+
+            string id = Request.QueryString["id"];
+
+            DataRow dr = mySongMethods.GetSong(id);
+            if (dr == null)
+            {
+                Response.Redirect(@"~/index.cshtml");
+            }
+
+        }
+        <style>
+            .form-inline, .form-text {
+                margin-left: 5px;
+            }
+
+            .rounded {
+                margin-top: 5px;
+                margin-left: 5px;
+            }
+        </style>
+        <div>
+            <form class="table-info" method="post" action="#">
+                <label class="form-inline">Id</label><input class="form-text" type="text" name="id" value="@dr["id"]" readonly />
+                <label class="form-inline">Title</label><input class="form-text" type="text" name="title" value="@dr["title"]" />
+                <label class="form-inline">Artist</label><input class="form-text" type="text" name="artist" value="@dr["artist"]" />
+                <label class="form-inline">Year</label><input class="form-text" type="text" name="year" value="@dr["year"]" />
+                <label class="form-inline">Genre</label><input class="form-text" type="text" name="genre" value="@dr["genre"]" />
+                <label class="form-inline">Album</label><input class="form-text" type="text" name="album" value="@dr["album"]" />
+                <input class="rounded" type="submit" value="Opslaan" />
+            </form>
+
+            @if (IsPost)
+            {
+                dr["title"] = Request.Form["title"];
+                dr["artist"] = Request.Form["artist"];
+                dr["year"] = Request.Form["year"];
+                dr["genre"] = Request.Form["genre"];
+                dr["album"] = Request.Form["album"];
+
+                mySongMethods.SaveSongs();
+
+                Response.Redirect("/index.cshtml");
+            }
+
+        </div>
+    </div>
+</body>
+</html>
